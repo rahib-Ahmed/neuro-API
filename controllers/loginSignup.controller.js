@@ -298,7 +298,7 @@ module.exports = {
                 role: req.body.role,
                 roleModel: req.body.role
             }
-           const updateRole = await userModel.findByIdAndUpdate(req.user.id, update)
+           const updateRole = await userModel.findByIdAndUpdate(req.user.id, update, {new: true})
         logger("debug", req, updateRole, lineNumber.__line);
             if (updateRole) {
                 const token = await
