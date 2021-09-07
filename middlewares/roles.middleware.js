@@ -5,7 +5,15 @@ const teacherModel = require('../models/teacher.model');
 const userModel = require('../models/user.model');
 
 exports.userExistence = async () => {
-    const existence = await userModel.findOne({_id: req.user.id, onType: {$exists: true}})
+try {    const existence = await userModel.findOne({_id: req.user.id, onType: {$exists: true}})
+    if(existence) next()
+    else throw("Does not exist")
+}catch(err) {
+    logger("error", req, err, lineNumber.__line)
+    return res
+        .status(404)
+        .send(err)
+} 
 }
 
 exports.allowedRole = function (role) {

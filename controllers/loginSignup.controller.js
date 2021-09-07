@@ -150,9 +150,14 @@ module.exports = {
             if (user) {
                 const token = await
                 createToken(user)
+
+                if(user.role === undefined) {
+                    return res.status(200).send(token)
+                } else {
                 return res
                     .status(201)
                     .send(token)
+                }
             } 
             return res
                 .status(401)
@@ -296,9 +301,11 @@ module.exports = {
            const updateRole = await userModel.findByIdAndUpdate(req.user.id, update)
         logger("debug", req, updateRole, lineNumber.__line);
             if (updateRole) {
+                const token = await
+                createToken(updateRole)
                 return res
                     .status(201)
-                    .send(updateRole)
+                    .send(token)
             } else 
                 throw("Try again")
         
