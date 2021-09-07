@@ -303,9 +303,15 @@ module.exports = {
             if (updateRole) {
                 const token = await
                 createToken(updateRole)
+                if(updateRole.isVerified == true) {
                 return res
                     .status(201)
-                    .send(token)
+                    .send(token)    
+                } else {
+                return res
+                    .status(200)
+                    .send("Verify your email to login")
+                }
             } else 
                 throw("Try again")
         
