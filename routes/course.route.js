@@ -40,6 +40,5 @@ router.delete('/rest/:id', auth, allowedRole(["Teacher", "Admin"]), ownerCourse,
 
 router.get('/', getAllCourse)
 
-router.post("/addReview", auth, addReview)
 
 module.exports = router;

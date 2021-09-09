@@ -74,13 +74,15 @@ exports.teacherDetails= async (req, res) => {
                 const obj = new teacherModel({teacherId: req.user.id})
                 const data = await obj.save()
                 if (data) {
+                    console.log("created new")
                     await teacherModel.findOneAndUpdate({
                         teacherId: req.user.id
                     }, update)
-                    await userModel.findOneAndUpdate({_id: req.user.id}, {onType: data._id})
+                    console.log(req.user.id)
+                  await userModel.findOneAndUpdate({_id: req.user.id}, {$set: {onType: data._id}}, {new: true})
                     return res
                         .status(201)
-                        .send("Updated")
+                        .send("Created")    
                 }
             }
     

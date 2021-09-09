@@ -16,6 +16,7 @@ const secureData = require('../utils/secureData');
             var tokens = secureData.decrypt(token)
             try {
                 const userClaims = await jwt.verify(tokens, `${process.env.ACCESS_TOKEN_SECRET}`)
+                // console.log(userClaims)
                 if (userClaims) {
                     req.user = userClaims
                     next()

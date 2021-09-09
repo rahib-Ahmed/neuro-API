@@ -4,14 +4,18 @@ const logger = require('../logger');
 const teacherModel = require('../models/teacher.model');
 const userModel = require('../models/user.model');
 
-exports.userExistence = async () => {
-try {    const existence = await userModel.findOne({_id: req.user.id, onType: {$exists: true}})
-    if(existence) next()
-    else throw("Does not exist")
+exports.userExistence = async (req, res, next) => {
+try {    
+    console.log(req.user.id)
+    const existence = await userModel.findOne({_id: req.user.id, onType: {$exists: true}})
+    console.log(existence)
+    if(existence) {next()}
+    else
+     throw("User does not exist")
 }catch(err) {
-    logger("error", req, err, lineNumber.__line)
+    // logger("error", req, err, lineNumber.__line)
     return res
-        .status(404)
+        .status(404)    
         .send(err)
 } 
 }
@@ -19,6 +23,8 @@ try {    const existence = await userModel.findOne({_id: req.user.id, onType: {$
 exports.allowedRole = function (role) {
     return async(req, res, next) => {
         try {
+            console.log(role)
+            console.log(req.user.role)
         if(role.includes(req.user.role))
            next() 
         else 
@@ -26,7 +32,7 @@ exports.allowedRole = function (role) {
         } catch (err) {
             return res
                 .status(401)
-                .send("Unauthorized")
+                .send(err)
         }
     }
 }
@@ -42,5 +48,16 @@ exports.ownerCourse = async function (req, res, next) {
         
     } catch (err) {
         return res.status(404).send("Not found")
+    }
+}
+exports.checkRole = async function (req, res, next) {
+    try {
+        const checkRole = await userModel.findOne({_id: req.user.id, role: {$exists: false}})
+        if(checkRole) {
+            next()
+        }
+        else throw("Role is already selected")
+    }catch(err) {
+        return res.status(404).send(err)
     }
 }

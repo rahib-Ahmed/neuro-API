@@ -10,7 +10,6 @@ const teacherModel = require("../models/teacher.model");
 const studentModel = require("../models/student.model");
 const courseModel = require("../models/course.model");
 
-const {ReviewUser} = require("../utils/creatingObject");
 
 exports.createCourse = async(req, res) => {
     try {
@@ -232,82 +231,6 @@ exports.deleteCourse = async(req, res) => {
 
     } catch (err) {
         logger("error", req, err, lineNumber.__line);
-        res
-            .status(500)
-            .send({
-                errors: [
-                    {
-                        code: 500,
-                        message: "Internal Server Error",
-                        error: err
-                    }
-                ]
-            });
-    }
-}
-exports.addReview = async(req, res) => {
-    try {
-        logger("info", req, "", lineNumber.__line)
-        const errors = await seqValidator(req, [
-            body("courseId")
-                .exists()
-                .withMessage("Mandatory"),
-            body("review")
-                .exists()
-                .withMessage("Mandatory"),
-            body("starGiven")
-                .exists()
-                .withMessage("Mandatory")
-        ])
-        if (!errors.isEmpty()) {
-            logger("error", req, {
-                errors: errors.array()
-            }, lineNumber.__line);
-            return res
-                .status(400)
-                .send({
-                    errors: errors.array()
-                });
-        }
-        const courseObject = await courseModel.findOne({_id: req.body.courseId})
-        if (courseObject) {
-            courseObject.rating.totalStar += parseInt(req.body.starGiven)
-            courseObject.rating.totalVotes += 1
-            courseObject.rating.avgRating = courseObject.rating.totalStar / courseObject.rating.totalVotes
-            const reviewByUser = await new ReviewUser(req.user.id, req.user.name, req.body.review, req.body.starGiven, "")
-            
-            console.log(courseObject.rating)
-
-            const update = {
-                rating: courseObject.rating,
-                $addToSet: {
-                    reviews: reviewByUser
-                }
-            }
-            const reviewAdded = await courseModel.findOneAndUpdate({
-                _id: req.body.courseId
-            }, update)
-            
-            // if (reviewAdded) {
-            //     await studentModel.findOneAndUpdate({
-            //         _id: req.user.id
-            //     }, {
-            //         $addToSet: {
-            //             reviews: req.body.courseId
-            //         }
-            //     })
-                return res
-                    .status(200)
-                    .send("Thank you for the review");
-            // }
-        } else {
-            return res
-                .status(404)
-                .send("Not found")
-        }
-    } catch (err) {
-        logger("error", req, err, lineNumber.__line);
-        console.log(err, lineNumber.__line);
         res
             .status(500)
             .send({

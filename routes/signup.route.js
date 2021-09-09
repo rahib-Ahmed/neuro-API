@@ -3,10 +3,11 @@ const signupController = require('../controllers/loginSignup.controller');
 const authenticationMiddleware = require('../middlewares/authenticator.middleware');
 const passport = require("passport");
 const { auth } = require('../middlewares/authenticator.middleware');
+const { checkRole } = require("../middlewares/roles.middleware");
 
 router.post('/users', signupController.signupUser);
 
-router.post("/socialrole", auth, signupController.socialRoleSelection);
+router.post("/socialrole", auth, checkRole, signupController.socialRoleSelection);
 
 router.post('/login', signupController.login);
 

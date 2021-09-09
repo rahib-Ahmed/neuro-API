@@ -7,6 +7,10 @@ const CourseSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'Teacher'
     },
+    reviews: {
+        type: Schema.Types.ObjectId,
+        ref: 'Reviews'
+    },
     language: String,
     course: String,
     program: String,
@@ -36,29 +40,6 @@ const CourseSchema = new mongoose.Schema({
     deleted: {
         type: Boolean,
         default: false
-    },
-    reviews: [
-        {
-            reviewerId: String,
-            reviewDate: Date,
-            reviewerName: String,
-            review: String,
-            starGiven: Number
-        }
-    ],
-    rating: {
-        totalStar: {
-            type: Number,
-            default: 0
-        },
-        totalVotes: {
-            type: Number,
-            default: 0
-        },
-        avgRating: {
-            type: Number,
-            default: 0
-        },
     }
 }, {versionKey: false});
 CourseSchema.set("toJSON", {

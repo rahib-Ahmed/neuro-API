@@ -60,9 +60,12 @@ const TeacherSchema = new mongoose.Schema({
 
     consultingAggreement: Boolean,
 
-    languageSpeak: Array,
-    languageTeaches: Array,
+    languageSpeak: [
 
+    ],
+    languageTeaches: [
+
+    ],
     totalLesson: Number,
     totalStudent: Number,
     rating: {

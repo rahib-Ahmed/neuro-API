@@ -1,8 +1,7 @@
 class ReviewUser {
    
-    constructor(reviewerId, reviewerName, review, starGiven, reviewDate) {
+    constructor(reviewerId, review, starGiven, reviewDate) {
         this.reviewerId = reviewerId
-        this.reviewerName = reviewerName
         this.review = review
         this.starGiven = parseInt(starGiven)
         this.reviewDate = reviewDate
