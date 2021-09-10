@@ -159,3 +159,39 @@ exports.createCoupon = async (req, res) => {
                 });
     }
 }
+
+exports.getTeacher = async (req, res) => {
+    try {
+        logger("info", req, "", lineNumber.__line)
+        const errors = await seqValidator(req, [
+            // param("id").exists()
+        ])
+        if (!errors.isEmpty()) {
+            logger("error", req, {
+                errors: errors.array()
+            }, lineNumber.__line);
+            return res
+                .status(400)
+                .send({
+                    errors: errors.array()
+                });
+        }   
+        const detailObject = await userModel.findOne({_id: req.user.id})
+                                .populate('onType', {courses: false, availability: false, coupons: false, teacherId: false, teacherProfilePic: false, avgRating: false})
+        return res.status(200).send(detailObject)
+    }catch (err) {
+            logger("error", req, err, lineNumber.__line);
+            console.log(err, lineNumber.__line);
+            res
+                .status(500)
+                .send({
+                    errors: [
+                        {
+                            code: 500,
+                            message: "Internal Server Error",
+                            error: err
+                        }
+                    ]
+                });
+        }
+}

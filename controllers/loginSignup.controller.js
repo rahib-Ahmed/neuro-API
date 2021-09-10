@@ -310,7 +310,7 @@ module.exports = {
                 } else {
                 return res
                     .status(200)
-                    .send("Verify your email to login")
+                    .send("Role is selected, Verify your email to login")
                 }
             } else 
                 throw("Try again")
@@ -331,4 +331,4 @@ module.exports = {
                 });
         }
     }
-}
+}   
