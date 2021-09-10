@@ -330,5 +330,30 @@ module.exports = {
                     ]
                 });
         }
+    },
+    authDetail: async function (req, res) {
+        try {
+            console.log(req.user)
+            if(req.user.isVerified === true) {  
+                
+                req.user.isRole != undefined ? res.status(200).send('login') : res.status(206).send('Role not selected') 
+            } else {
+                return res.status(403).send("Unforbidden")
+            }
+        }catch(err) {
+            logger("error", req, err, lineNumber.__line);
+            console.log(err, lineNumber.__line);
+            res
+                .status(500)
+                .send({
+                    errors: [
+                        {
+                            code: 500,
+                            message: "Internal Server Error",
+                            error: err
+                        }
+                    ]
+                });
+        }
     }
 }   

@@ -15,7 +15,7 @@ router.post("/reset", authenticationMiddleware.checkEmail, signupController.rese
 
 router.post("/reset-password/:token", signupController.handleReset);
 
-
+router.get('/', auth, signupController.authDetail)
 
 router.get("/auth/facebook", passport.authenticate('facebook', { scope: 'email,user_photos' }));
 

@@ -14,7 +14,8 @@ const secureData = require('./secureData')
             name: data.fullName,
             email: data.email,
             id: data._id,
-            role: data.role
+            role: data.role,
+            verified: data.isVerified
         }
         const exp = '120000d'
         const access = await module.exports.generateToken(objs, exp)
