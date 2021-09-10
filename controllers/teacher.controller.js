@@ -176,7 +176,7 @@ exports.getTeacher = async (req, res) => {
                     errors: errors.array()
                 });
         }   
-        const detailObject = await userModel.findOne({_id: req.user.id})
+        const detailObject = await userModel.findOne({_id: req.user.id}, {password: false, isVerified: false, email: false})
                                 .populate('onType', {courses: false, availability: false, coupons: false, teacherId: false, teacherProfilePic: false, avgRating: false})
         return res.status(200).send(detailObject)
     }catch (err) {
