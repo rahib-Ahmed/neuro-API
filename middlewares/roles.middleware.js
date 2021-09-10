@@ -8,7 +8,6 @@ exports.userExistence = async (req, res, next) => {
 try {    
     console.log(req.user.id)
     const existence = await userModel.findOne({_id: req.user.id, onType: {$exists: true}})
-    console.log(existence)
     if(existence) {next()}
     else
      throw("User does not exist")
@@ -19,7 +18,6 @@ try {
         .send(err)
 } 
 }
-
 exports.allowedRole = function (role) {
     return async(req, res, next) => {
         try {

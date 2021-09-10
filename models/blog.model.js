@@ -59,4 +59,4 @@ BlogSchema.set("toJSON", {
     delete rec._id;
   },
 });
-module.exports = mongoose.model("Blog", BlogSchema, "Blog");
+module.exports = mongoose.model("Blogs", BlogSchema, "Blogs");

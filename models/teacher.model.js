@@ -14,6 +14,18 @@ const TeacherSchema = new mongoose.Schema({
             ref: 'Coupon'
         }
     ],
+    courses: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Course'
+        }
+    ],
+    blogs: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Blogs'
+        }
+    ],
     teacherProfilePic: {
         imageProfile: {
             type: String,
@@ -60,12 +72,8 @@ const TeacherSchema = new mongoose.Schema({
 
     consultingAggreement: Boolean,
 
-    languageSpeak: [
-
-    ],
-    languageTeaches: [
-
-    ],
+    languageSpeak: [],
+    languageTeaches: [],
     totalLesson: Number,
     totalStudent: Number,
     rating: {
@@ -104,17 +112,10 @@ const TeacherSchema = new mongoose.Schema({
             certificate_data: Object
         }
     ],
-    courses: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Course'
-        }
-    ],
     avgRating: {
         type: Number,
         default: 0
     },
-
     availability: [
         {
             avail_title: String,
