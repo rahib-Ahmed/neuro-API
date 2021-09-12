@@ -298,8 +298,10 @@ module.exports = {
                 role: req.body.role,
                 roleModel: req.body.role
             }
+            console.log(update)
            const updateRole = await userModel.findByIdAndUpdate(req.user.id, update, {new: true})
         logger("debug", req, updateRole, lineNumber.__line);
+        console.log(updateRole)
             if (updateRole) {
                 const token = await
                 createToken(updateRole)
@@ -333,13 +335,15 @@ module.exports = {
     },
     authDetail: async function (req, res) {
         try {
-            console.log(req.user)
-            if(req.user.isVerified === true) {  
+            const authDetailUser = await userModel.findOne({_id: req.user.id, isVerified: true})
+            if(authDetailUser) {
                 
-                req.user.isRole != undefined ? res.status(200).send('login') : res.status(206).send('Role not selected') 
+                const token = await createToken(authDetailUser)
+                console.log("my", token)
+                authDetailUser.role != undefined ? res.status(200).send({msg: 'Login', token: token, role: authDetailUser.role }) : res.status(206).send({msg: 'Select Role'}) 
             } else {
                 return res.status(403).send("Unforbidden")
-            }
+            }   
         }catch(err) {
             logger("error", req, err, lineNumber.__line);
             console.log(err, lineNumber.__line);

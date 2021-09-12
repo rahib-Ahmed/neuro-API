@@ -21,6 +21,7 @@ try {
 exports.allowedRole = function (role) {
     return async(req, res, next) => {
         try {
+            console.log(req.user)
             console.log(role)
             console.log(req.user.role)
         if(role.includes(req.user.role))
@@ -50,7 +51,9 @@ exports.ownerCourse = async function (req, res, next) {
 }
 exports.checkRole = async function (req, res, next) {
     try {
+        console.log(req.user)
         const checkRole = await userModel.findOne({_id: req.user.id, role: {$exists: false}})
+        console.log(checkRole)
         if(checkRole) {
             next()
         }

@@ -43,10 +43,7 @@ const TeacherSchema = new mongoose.Schema({
             type: String
         }
     },
-    teacherType: {
-        type: String,
-        default: "true"
-    },
+    teacherType: String,
     countryCode: String,
     phone: Number,
     gender: String,
@@ -61,14 +58,8 @@ const TeacherSchema = new mongoose.Schema({
     profession: String,
     accent: String,
     createdOn: Date,
-    videoURL: {
-        type: String,
-        default: "true"
-    },
-    selfIntro: {
-        type: String,
-        default: "true"
-    },
+    videoURL: String,
+    selfIntro: String,
 
     consultingAggreement: Boolean,
 

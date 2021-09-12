@@ -1,5 +1,6 @@
 const { body } = require('express-validator');  
 exports.teacherProfile = async function (req) {
+    console.log(typeof req.body.languageSpeak)
     const teach = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -31,10 +32,10 @@ exports.teacherProfile = async function (req) {
     if(req.body.imageProfileData === undefined) {
         teach.teacherProfilePic = undefined
     }
-    if(req.body.languageSpeak != undefined) {
+    if(req.body.languageSpeak) {
          teach.languageSpeak = JSON.parse(req.body.languageSpeak)
     }
-    if(req.body.languageTeaches != undefined) {
+    if(req.body.languageTeaches) {
         teach.languageTeaches = JSON.parse(req.body.languageTeaches)
     }
     return teach;

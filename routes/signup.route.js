@@ -17,6 +17,9 @@ router.post("/reset-password/:token", signupController.handleReset);
 
 router.get('/', auth, signupController.authDetail)
 
+
+
+
 router.get("/auth/facebook", passport.authenticate('facebook', { scope: 'email,user_photos' }));
 
 router.get("/facebook/callback", passport.authenticate('facebook', {

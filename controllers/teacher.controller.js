@@ -23,8 +23,8 @@ exports.teacherDetails= async (req, res) => {
                 body("countryCode"),
                 body("contact"),
                 body("teacherType"),
-                // body("languageSpeak").isArray(),
-                // body("languageTeaches").if(body("languageSpeak").exists()).notEmpty(),
+                body("languageSpeak"),
+                body("languageTeaches"),
                 body("fromState"),
                 body("fromCountry"),
                 body("imageProfile"),
@@ -46,7 +46,7 @@ exports.teacherDetails= async (req, res) => {
                         errors: errors.array()
                     });
             }   
-            
+               
             const teacherResume = await teacherExpirence(req.body.resume, req.files.certificateData)
 
             const teacherDetails = await teacherModel.findOne({teacherId: req.user.id})
@@ -54,7 +54,7 @@ exports.teacherDetails= async (req, res) => {
             const personalDetail = await teacherProfile(req)
 
             var filter = _.pickBy(personalDetail, function (value, key) {
-                return !(value === '' || value === undefined)
+                return !(value === '' || value === undefined || value === "undefined")
             });
 
             const update = {
@@ -178,6 +178,7 @@ exports.getTeacher = async (req, res) => {
         }   
         const detailObject = await userModel.findOne({_id: req.user.id}, {password: false, isVerified: false, email: false})
                                 .populate('onType', {courses: false, availability: false, coupons: false, teacherId: false, teacherProfilePic: false, avgRating: false})
+                               console.log(detailObject)
         return res.status(200).send(detailObject)
     }catch (err) {
             logger("error", req, err, lineNumber.__line);

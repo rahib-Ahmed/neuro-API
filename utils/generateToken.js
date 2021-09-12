@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken');
 const secureData = require('./secureData')
     
     exports.generateToken = async(obj, exp) => {
-        // console.log("in token", exp)
+        console.log(obj)
         const access_token = jwt.sign(obj, `${process.env.ACCESS_TOKEN_SECRET}`, {expiresIn: exp});
         const token_gen = secureData.encrypt(access_token)
-        // console.log(token_gen)
+        console.log(token_gen)
         return token_gen;
     };
 
@@ -19,5 +19,6 @@ const secureData = require('./secureData')
         }
         const exp = '120000d'
         const access = await module.exports.generateToken(objs, exp)
+        console.log(access)
         return { access }
     }
