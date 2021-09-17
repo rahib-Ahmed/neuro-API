@@ -10,12 +10,12 @@ const secureData = require('../utils/secureData');
         auth: async (req, res, next) => {
           
             let token = req.headers['authorization']
-            // console.log(token)
+            console.log(token)
             token = token.split(' ')[1]
             
 
-            var tokens = secureData.decrypt(token)
-          
+            var tokens = await secureData.decrypt(token)
+            console.log(tokens)
             try {
                 const userClaims = await jwt.verify(tokens, `${process.env.ACCESS_TOKEN_SECRET}`)
                 // console.log(userClaims)

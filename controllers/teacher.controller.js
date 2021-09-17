@@ -33,8 +33,8 @@ exports.teacherDetails= async (req, res) => {
                 body("currentCountry"),
                 body("selfIntro"),
                 body("videoURL"),
-                // body("resume").custom(parseDataResume),
-                // body("certificateData").if(body("resume").exists()),
+                body("resume").custom(parseDataResume),
+                body("certificateData").if(body("resume").exists()),
             ])
             if (!errors.isEmpty()) {
                 logger("error", req, {
@@ -46,7 +46,6 @@ exports.teacherDetails= async (req, res) => {
                         errors: errors.array()
                     });
             }   
-               
             const teacherResume = await teacherExpirence(req.body.resume, req.files.certificateData)
 
             const teacherDetails = await teacherModel.findOne({teacherId: req.user.id})
@@ -160,7 +159,7 @@ exports.createCoupon = async (req, res) => {
     }
 }
 
-exports.getTeacher = async (req, res) => {
+exports.getTeacherOnboard = async (req, res) => {
     try {
         logger("info", req, "", lineNumber.__line)
         const errors = await seqValidator(req, [
@@ -195,4 +194,47 @@ exports.getTeacher = async (req, res) => {
                     ]
                 });
         }
+}
+
+exports.getTeacher = async (req, res) => {
+    try {
+        logger("info", req, "", lineNumber.__line)
+        const errors = await seqValidator(req, [
+            // param("id").exists()
+        ])
+        if (!errors.isEmpty()) {
+            logger("error", req, {
+                errors: errors.array()
+            }, lineNumber.__line);
+            return res
+                .status(400)
+                .send({
+                    errors: errors.array()
+                });
+        }
+        
+        const detailedObject = await teacherModel.findOne({teacherId: req.user.id})
+                                // .populate('coupons')
+                                .populate('courses')
+                                .populate('blogs')
+            console.log(detailedObject)
+          if(detailedObject)
+          return res.status(200).send(detailedObject) 
+          else throw("Nothing was found")                     
+    }catch (err) {
+            logger("error", req, err, lineNumber.__line);
+            console.log(err, lineNumber.__line);
+            res
+                .status(500)
+                .send({
+                    errors: [
+                        {
+                            code: 500,
+                            message: "Internal Server Error",
+                            error: err
+                        }
+                    ]
+                });
+        }
+       
 }

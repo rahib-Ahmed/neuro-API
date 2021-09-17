@@ -1,30 +1,30 @@
+'use strict';
+
 const crypto = require('crypto');
-const ENCRYPTION_KEY = process.env.key; // Must be 256 bits (32 characters)
+
+const ENCRYPTION_KEY = `${process.env.key}`; // Must be 256 bits (32 characters)
 const IV_LENGTH = 16; // For AES, this is always 16
 
 function encrypt(text) {
-	var iv = '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f';
-    var m = crypto.createHash('md5');
-    m.update(`${process.env.key}`);
-    var key = m.digest();
-    
-    var cipher = crypto.createCipheriv('aes-128-cbc', key, iv);    
-    var encoded = cipher.update(text, 'utf8', 'hex');
-    encoded += cipher.final('hex');
-    
-    return encoded;
+ let iv = crypto.randomBytes(IV_LENGTH);
+ let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
+ let encrypted = cipher.update(text);
+
+ encrypted = Buffer.concat([encrypted, cipher.final()]);
+
+ return iv.toString('hex') + ':' + encrypted.toString('hex');
 }
- 
+
 function decrypt(text) {
-    
-	var iv = '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f';
-    var m = crypto.createHash('md5');
-    m.update(`${process.env.key}`);
-    var key = m.digest();
-	let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
-    var decoded = decipher.update(text, 'hex', 'utf8');
-    decoded += decipher.final('utf8');
-	return decoded.toString();
-}   
+ let textParts = text.split(':');
+ let iv = Buffer.from(textParts.shift(), 'hex');
+ let encryptedText = Buffer.from(textParts.join(':'), 'hex');
+ let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
+ let decrypted = decipher.update(encryptedText);
+
+ decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+ return decrypted.toString();
+}
 
 module.exports = { decrypt, encrypt };

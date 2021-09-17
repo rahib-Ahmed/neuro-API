@@ -4,8 +4,6 @@ const { Schema } = mongoose;
 const BlogSchema = new Schema(
   {
     id: Number,
-    PostedBy: String,
-    PostedById: String,
     isVerified: Boolean,
     title: String,
     imageBlog: {
@@ -39,8 +37,8 @@ const BlogSchema = new Schema(
       default: new Date(),
     },
     createdBy: {
-      type: String,
-      ref: "user",
+      type: Schema.Types.ObjectId,
+      ref: "Teacher",
     },
     createdOn: {
       type: Date,

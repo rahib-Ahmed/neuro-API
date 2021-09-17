@@ -29,15 +29,16 @@ exports.teacherProfile = async function (req) {
         ip: req.body.ip,
         browser: req.body.browser
     }
-    if(req.body.imageProfileData === undefined) {
+    if(req.files.imageProfileData === undefined) {
         teach.teacherProfilePic = undefined
     }
     if(req.body.languageSpeak) {
-         teach.languageSpeak = JSON.parse(req.body.languageSpeak)
+         teach.languageSpeak = req.body.languageSpeak
     }
     if(req.body.languageTeaches) {
-        teach.languageTeaches = JSON.parse(req.body.languageTeaches)
+        teach.languageTeaches = req.body.languageTeaches
     }
+    console.log(teach)
     return teach;
 }
 /**

@@ -5,7 +5,8 @@ const logger = require("../loggingFunction");
 const { seqValidator, parallelValidator } = require("../validator");
 const { body } = require("express-validator");
 const { exists } = require("../models/blog.model");
-
+const {randomNumber} = require('../utils/generateNumber');
+const teacherModel = require("../models/teacher.model");
 exports.createBlog = async (req, res) => {
   try {
     logger("info", req, "", lineNumber.__line);
@@ -22,25 +23,41 @@ exports.createBlog = async (req, res) => {
     }
 
     const {
+      id = await randomNumber(),
       title,
       tags,
       categories,
       description,
       modifiedOn = new Date().toISOString(),
-      createdBy,
     } = req.body;
-
+    
+    const blogImagedata = req.file
+    
+    const createdBy = req.user.id
+    
     const blog = new BlogModel({
+      id,
       title,
       tags,
       categories,
       description,
       modifiedOn,
-      createdBy,
+      createdBy: createdBy,
+      imageBlog: {blogImagedata: blogImagedata}
     });
+
     const blogObject = await blog.save();
-    logger("debug", req, blogObject, lineNumber.__line);
-    return res.status(201).send(blogObject);
+    
+    if(blogObject) {
+      const update = {
+        $addToSet: {
+            blogs: blogObject._id
+        }
+    }
+      await teacherModel.findOneAndUpdate({teacherId: req.user.id}, update)
+    }
+    return res.status(200).send(blogObject)
+
   } catch (err) {
     logger("error", req, err, lineNumber.__line);
     console.log(err, lineNumber.__line);

@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
-const secureData = require('./secureData')
+const secureData = require('./secureData');
+
 function generateEmail(userName, email, type, link) {
     console.log(email)
     if (type === 1) {
@@ -30,6 +31,18 @@ function generateMailOptions(userName, email, type, link) {
         return mailOptions;
     }
 }
+/**
+ * ZOHO credentials
+ */
+// var transporter = nodemailer.createTransport({
+//     host: "smtp.zeptomail.in",
+//     port: 587,
+//     auth: {
+//     user: `${process.env.ZOHO_EMAIL}`,
+//     pass: `${process.env.ZOHO_EMAIL_PASS}`
+//     }
+// });
+
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -37,7 +50,6 @@ var transporter = nodemailer.createTransport({
         pass: `${process.env.PASSMAIL}`
     }
 });
-
 /**
  * 
  * @param {String} userName 

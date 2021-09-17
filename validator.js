@@ -44,11 +44,13 @@ const checkPassword = async (paswordRequested, { req }) => {
 
     return userModel
         .findOne({ email: req.body.email })
-        .then((chk) => {
+        .then(async (chk) => {
+            
             if (!chk) {
                 return Promise.reject("User does not exist")
             } else {
-                const password = secureData.decrypt(chk.password)
+                const password = await secureData.decrypt(chk.password)
+                console.log(password)
                 if (password != paswordRequested) {
                     return Promise.reject("Wrong username or password")
                 }
@@ -67,6 +69,7 @@ const tokenValidator = async (tokens, { req }) => {
 }
 
 const parseDataResume = async (resume, { req } ) => {
+    console.log(resume)
    if(resume != undefined) {
     try { 
         const teacherResume = JSON.parse(resume)

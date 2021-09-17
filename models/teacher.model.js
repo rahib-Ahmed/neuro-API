@@ -63,8 +63,16 @@ const TeacherSchema = new mongoose.Schema({
 
     consultingAggreement: Boolean,
 
-    languageSpeak: [],
-    languageTeaches: [],
+    languageSpeak: [
+        {
+            type: String
+        }
+    ],
+    languageTeaches: [
+        {
+            type: String
+        }
+    ],
     totalLesson: Number,
     totalStudent: Number,
     rating: {

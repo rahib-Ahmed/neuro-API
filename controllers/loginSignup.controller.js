@@ -146,7 +146,7 @@ module.exports = {
                     });
             }
             const user = await userModel.findOne({email: req.body.email, isVerified: true})
- 
+            console.log("here")
             if (user) {
                 const token = await
                 createToken(user)
@@ -340,7 +340,9 @@ module.exports = {
                 
                 const token = await createToken(authDetailUser)
                 console.log("my", token)
-                authDetailUser.role != undefined ? res.status(200).send({msg: 'Login', token: token, role: authDetailUser.role }) : res.status(206).send({msg: 'Select Role'}) 
+                authDetailUser.role != undefined ? 
+                res.status(200).send({msg: 'Login', token: token, role: authDetailUser.role }) 
+                : res.status(206).send({msg: 'Select Role'}) 
             } else {
                 return res.status(403).send("Unforbidden")
             }   
