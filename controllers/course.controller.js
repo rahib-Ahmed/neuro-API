@@ -224,6 +224,12 @@ exports.deleteCourse = async(req, res) => {
                 .status(404)
                 .send("Not Found")
         } else {
+            const update = {
+                $pull: {
+                    courses: req.params.id
+                }
+            }
+            await teacherModel.findOneAndUpdate(req.user.id, update)
             return res
                 .status(200)
                 .send("Deleted Successfully");

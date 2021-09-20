@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {createCourse, updateCourse, getAllCourse, deleteCourse, addReview} = require('../controllers/course.controller');
-const {allowedRole, ownerCourse, userExistence} = require("../middlewares/roles.middleware");
+const {allowedRole, owner, userExistence} = require("../middlewares/roles.middleware");
 const multerS3 = require("multer-s3");
 const aws = require("aws-sdk");
 
@@ -34,9 +34,9 @@ const upload = multer({
 
 router.post('/createCourse', auth, allowedRole(["Teacher"]), userExistence, upload.single('courseImage', 1), createCourse);
 
-router.put('/:id', auth, allowedRole(["Teacher", "Admin"]), ownerCourse, upload.single('courseImage', 1), updateCourse)
+router.put('/:id', auth, allowedRole(["Teacher", "Admin"]), owner, upload.single('courseImage', 1), updateCourse)
 
-router.delete('/rest/:id', auth, allowedRole(["Teacher", "Admin"]), ownerCourse, deleteCourse)
+router.delete('/rest/:id', auth, allowedRole(["Teacher", "Admin"]), owner, deleteCourse)
 
 router.get('/', getAllCourse)
 

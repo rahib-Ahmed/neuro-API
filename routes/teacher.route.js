@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {teacherDetails, createCoupon, getTeacherOnboard, getTeacher} = require('../controllers/teacher.controller');
+const {teacherDetails, createCoupon, getTeacherOnboard, getTeacher, languageUpdate} = require('../controllers/teacher.controller');
 const {allowedRole} = require('../middlewares/roles.middleware')
 const {upload} = require('../utils/uploadMulter')
 
@@ -21,5 +21,7 @@ router.post('/createCoupon', auth, allowedRole(["Teacher"]), createCoupon)
 router.get('/', auth, allowedRole(["Teacher"]), getTeacherOnboard)
 
 router.get('/detail', auth, allowedRole(["Teacher"]), getTeacher)
+
+router.patch('/', auth, allowedRole(["Teacher"]), languageUpdate)
 
 module.exports = router;

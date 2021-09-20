@@ -48,7 +48,7 @@ exports.teacherDetails= async (req, res) => {
             }   
             const teacherResume = await teacherExpirence(req.body.resume, req.files.certificateData)
 
-            const teacherDetails = await teacherModel.findOne({teacherId: req.user.id})
+            const teacherDetails = await teacherModel.findOne({teacherId: req.user.id, isVerified: true})
 
             const personalDetail = await teacherProfile(req)
 
@@ -237,4 +237,48 @@ exports.getTeacher = async (req, res) => {
                 });
         }
        
+}
+exports.languageUpdate = async (req, res) => {
+    try {
+        logger("info", req, "", lineNumber.__line)
+        const errors = await seqValidator(req, [
+            body("currentlyTeaching").isArray().exists().withMessage("Mandatory"),
+            body("currentlySpeaking").isArray().exists().withMessage("Mandatory")
+        ])
+        if (!errors.isEmpty()) {
+            logger("error", req, {
+                errors: errors.array()
+            }, lineNumber.__line);
+            return res
+                .status(400)
+                .send({
+                    errors: errors.array()
+                });
+        }   
+        const update = {
+            currentlyTeaching: req.body.currentlyTeaching,
+            currentlySpeaking: req.body.currentlySpeaking,
+        }
+            const languages = await teacherModel.findOneAndUpdate({teacherId: req.user.id}, update)
+            
+            if(languages) {
+                return res.status(200).send("Updated")
+            } else {
+                return res.status(401).send("Try again")
+            }
+    }catch (err) {
+            logger("error", req, err, lineNumber.__line);
+            console.log(err, lineNumber.__line);
+            res
+                .status(500)
+                .send({
+                    errors: [
+                        {
+                            code: 500,
+                            message: "Internal Server Error",
+                            error: err
+                        }
+                    ]
+                });
+        }
 }

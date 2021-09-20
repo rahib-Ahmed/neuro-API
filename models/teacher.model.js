@@ -73,6 +73,20 @@ const TeacherSchema = new mongoose.Schema({
             type: String
         }
     ],
+    currentlyTeaching: [
+        {
+            language: String,
+            status: Boolean,
+            proficiency: String
+        }
+    ],
+    currentlySpeaking: [
+        {
+            language: String,
+            status: Boolean,
+            proficiency: String
+        }   
+    ],
     totalLesson: Number,
     totalStudent: Number,
     rating: {
@@ -127,7 +141,11 @@ const TeacherSchema = new mongoose.Schema({
     ],
     certificateData: Array,
     ip: String,
-    browser: String
+    browser: String,
+    isVerified: {
+        type: Boolean,
+        default: false
+    }
 }, {versionKey: false});
 TeacherSchema.set("toJSON", {
     virtuals: true,
