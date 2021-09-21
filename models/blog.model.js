@@ -6,7 +6,7 @@ const BlogSchema = new Schema(
     id: Number,
     isVerified: {
       type: Boolean,
-      default: false
+      default: true
     },
     title: String,
     imageBlog: {
@@ -34,7 +34,7 @@ const BlogSchema = new Schema(
     ],
     isArchived: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     modifiedOn: {
       type: Date,
