@@ -59,7 +59,7 @@ exports.owner = async function (req, res, next) {
                 }
             ]
         }
-
+        console.log(req.params.id)
         const owner = await teacherModel.findOne(query)
         if (owner) {
             next()

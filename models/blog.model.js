@@ -4,7 +4,10 @@ const { Schema } = mongoose;
 const BlogSchema = new Schema(
   {
     id: Number,
-    isVerified: Boolean,
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
     title: String,
     imageBlog: {
       blogCover: {
@@ -26,6 +29,7 @@ const BlogSchema = new Schema(
     tags: [
       {
         type: String,
+
       },
     ],
     isArchived: {
